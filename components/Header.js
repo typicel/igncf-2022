@@ -13,7 +13,12 @@ const Header = () => {
     <div className="left">
       <Link href="/">
         <a className="bold" data-active={isActive("/")}>
-          Feed
+          Home
+        </a>
+      </Link>
+      <Link href="/search">
+        <a className="bold" data-active={isActive("/search")}>
+          Search
         </a>
       </Link>
       <style jsx>{`
@@ -45,7 +50,7 @@ const Header = () => {
       <div className="left">
         <Link href="/">
           <a className="bold" data-active={isActive("/")}>
-            Feed
+            Home
           </a>
         </Link>
         <style jsx>{`
@@ -113,16 +118,18 @@ const Header = () => {
   }
 
   if (session) {
-    /* If the user is logged in */
     left = (
       <div className="left">
         <Link href="/">
           <a className="bold" data-active={isActive("/")}>
-            Dash
+            Home
           </a>
         </Link>
         <Link href="/search">
-          <a data-active={isActive("/search")}>Search for Polls</a>
+          <a data-active={isActive("/search")}>Search</a>
+        </Link>
+        <Link href="/create">
+          <a data-active={isActive("/create")}>Create a Poll</a>
         </Link>
         <style jsx>{`
           .bold {
