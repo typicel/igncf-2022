@@ -1,10 +1,11 @@
 import "../styles/globals.css";
 import { SessionProvider } from "next-auth/react";
+import { AppShell } from "@mantine/core";
 
 function MyApp({ Component, pageProps }) {
   return (
     <SessionProvider session={pageProps.session}>
-      <Component {...pageProps} />;
+      <Component {...pageProps} />
     </SessionProvider>
   );
 }

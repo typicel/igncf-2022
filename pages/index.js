@@ -1,10 +1,15 @@
 import prisma from "../lib/prisma";
 import Sidebar from "../components/Sidebar";
-import Link from "next/link";
 import Header from "../components/Header";
+import { AppShell } from "@mantine/core";
 
 export const getServerSideProps = async () => {
-  const polls = await prisma.poll.findMany();
+  const polls = await prisma.poll.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+    take: 5,
+  });
   for (const poll of polls) {
     poll.createdAt = poll.createdAt.toString();
   }
@@ -16,18 +21,10 @@ export const getServerSideProps = async () => {
 
 export default function Home(props) {
   return (
-    <div>
-      <Header />
-      <Sidebar polls={props.polls} />
-      <ul>
-        {props.users.map((user) => (
-          <li>
-            <Link href="/user/[user_id]" as={`/user/${user.id}`}>
-              <a>{user.displayName}</a>
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <AppShell
+      title="Polls"
+      navbar={<Sidebar polls={props.polls} />}
+      header={<Header />}
+    />
   );
 }

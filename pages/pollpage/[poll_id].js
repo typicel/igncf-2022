@@ -1,6 +1,7 @@
 import React from "react";
 import prisma from "../../lib/prisma";
-import Link from "next/link";
+import Header from "../../components/Header";
+import { List, Paper } from "@mantine/core";
 
 export const getServerSideProps = async ({ params }) => {
   const poll = await prisma.poll.findUnique({
@@ -14,27 +15,42 @@ export const getServerSideProps = async ({ params }) => {
 };
 
 const PollPage = ({ poll }) => {
-  console.log(poll.answers);
   return (
-    <div>
-      <Link href="/" as="/">
-        Back to home
-      </Link>
-      <h1>{poll.title}</h1>
-      <p>{poll.description}</p>
-      <p>{poll.createdAt}</p>
-
-      {/* <h1>Users who responded:</h1>
-      <ul>
-        {poll.answer.map((answer) => (
-          <li>
-            <Link href="/user/[user_id]" as={`/user/${answer.user.id}`}>
-              <a>{answer.user.displayName}</a>
-            </Link>
-          </li>
-        ))}
-      </ul> */}
-    </div>
+    <>
+      <Header />
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Paper
+          className="poll-paper"
+          shadow="sm"
+          style={{ width: "100vh", textAlign: "center", padding: "20px" }}
+        >
+          <h1>{poll.title}</h1>
+          <p>{poll.description}</p>
+          <p>Created on {new Date(poll.createdAt).toDateString()}</p>
+          <hr></hr>
+          <List spacing="xs" size="lg" style={{ textAlign: "left" }}>
+            {poll.possible_responses.map((response) => (
+              <List.Item>{response}</List.Item>
+            ))}
+          </List>
+        </Paper>
+        {/* styles */}
+        <style jsx>{`
+          .poll-paper {
+            color: red;
+            width: 50%;
+            text-align: "center";
+            padding: "20px";
+          }
+        `}</style>
+      </div>
+    </>
   );
 };
 
