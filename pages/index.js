@@ -1,6 +1,7 @@
 import prisma from "../lib/prisma";
 import Sidebar from "../components/Sidebar";
 import Link from "next/link";
+import Header from "../components/Header";
 
 export const getServerSideProps = async () => {
   const polls = await prisma.poll.findMany();
@@ -16,6 +17,7 @@ export const getServerSideProps = async () => {
 export default function Home(props) {
   return (
     <div>
+      <Header />
       <Sidebar polls={props.polls} />
       <ul>
         {props.users.map((user) => (
