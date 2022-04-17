@@ -1,11 +1,14 @@
 import "../styles/globals.css";
 import { SessionProvider } from "next-auth/react";
-import { AppShell } from "@mantine/core";
+import PrivateRoute from "../components/PrivateRoute";
 
 function MyApp({ Component, pageProps }) {
+  let protectedRoutes = ["/create"];
   return (
     <SessionProvider session={pageProps.session}>
-      <Component {...pageProps} />
+      <PrivateRoute protectedRoutes={protectedRoutes}>
+        <Component {...pageProps} />
+      </PrivateRoute>
     </SessionProvider>
   );
 }
