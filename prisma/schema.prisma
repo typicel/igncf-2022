@@ -71,6 +71,7 @@ model poll {
   title              String
   description        String
   possible_responses String[]
+  votes              Int[]
   createdAt          DateTime @default(now())
-  answers            answer[]
+  answer             answer[]
 }

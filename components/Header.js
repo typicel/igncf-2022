@@ -154,7 +154,7 @@ const Header = () => {
     );
     right = (
       <div className="right">
-        <p>Welcome, {session.user.name}</p>
+        <p>{session.user.name}</p>
         <button onClick={() => signOut()}>
           <a>Log out</a>
         </button>
