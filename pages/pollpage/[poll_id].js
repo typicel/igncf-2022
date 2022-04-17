@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import prisma from "../../lib/prisma";
 import Header from "../../components/Header";
-import { List, Paper } from "@mantine/core";
+import { Button, List, Paper, Radio, RadioGroup } from "@mantine/core";
+import { useSession } from "next-auth/react";
 
 export const getServerSideProps = async ({ params }) => {
   const poll = await prisma.poll.findUnique({
@@ -15,6 +16,14 @@ export const getServerSideProps = async ({ params }) => {
 };
 
 const PollPage = ({ poll }) => {
+  const { data: session, status } = useSession();
+  let [vote, setVote] = useState("");
+
+  const handleVote = async (e) => {
+    e.preventDefault();
+    alert(vote);
+  };
+
   return (
     <>
       <Header />
@@ -28,7 +37,12 @@ const PollPage = ({ poll }) => {
         <Paper
           className="poll-paper"
           shadow="sm"
-          style={{ width: "100vh", textAlign: "center", padding: "20px" }}
+          style={{
+            width: "100vh",
+            textAlign: "center",
+            padding: "20px",
+            marginBottom: "20px",
+          }}
         >
           <h1>{poll.title}</h1>
           <p>{poll.description}</p>
@@ -40,15 +54,21 @@ const PollPage = ({ poll }) => {
             ))}
           </List>
         </Paper>
-        {/* styles */}
-        <style jsx>{`
-          .poll-paper {
-            color: red;
-            width: 50%;
-            text-align: "center";
-            padding: "20px";
-          }
-        `}</style>
+
+        {session ? (
+          <form onSubmit={handleVote}>
+            <RadioGroup value={vote} onChange={setVote}>
+              {poll.possible_responses.map((response, index) => (
+                <Radio value={response} label={response} />
+              ))}
+            </RadioGroup>
+            <Button type="submit" color="blue">
+              Cast
+            </Button>
+          </form>
+        ) : (
+          <h2>You must be logged in to vote</h2>
+        )}
       </div>
     </>
   );
